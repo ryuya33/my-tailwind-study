@@ -1,23 +1,46 @@
-import Button from "./Button";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function ProfileCard() {
   return (
-    <section className="bg-white shadow-lg rounded-2xl p-8 max-w-lg w-full text-center md:max-w-3xl md:flex md:items-center md:text-left">
-      <img
-        src="/my-icon.png"
-        alt="Ryuya Tanbaのプロフィール画像"
-        className="mx-auto md:mx-0 rounded-full mb-4 md:mb-0 md:mr-8 w-36 h-36"
-      />
-      <div>
-        <h1 className="text-3xl font-bold mb-2 text-gray-800">Ryuya Tanba</h1>
-        <p className="text-gray-600 mb-6">
-          丹波篠山のWeb開発者。Next.jsとTailwind CSSで地域に役立つサイトを制作中。
-        </p>
-        <div className="flex justify-center gap-4">
-          <Button label="GitHub" href="https://github.com/ryuya-okumo" />
-          <Button label="Blog" href="https://okumo-blog.vercel.app" variant="outline" />
-        </div>
+    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center text-center">
+      {/* プロフィール画像 */}
+      <div className="relative w-24 h-24 mb-4">
+        <Image
+          src="/syamoji.png"
+          alt="田舎在住のAI好きキャラ「しゃもじぃ」"
+          fill
+          className="rounded-full object-cover border-2 border-indigo-50"
+        />
       </div>
-    </section>
+
+      {/* 名前 */}
+      <h2 className="text-xl font-bold text-gray-800 mb-1">しゃもじぃ</h2>
+
+      {/* 肩書き */}
+      <p className="text-xs text-indigo-600 font-bold bg-indigo-50 px-3 py-1 rounded-full mb-4">
+        現場職 × AIエンジニア
+      </p>
+
+      {/* 自己紹介文 */}
+      <p className="text-sm text-gray-600 leading-relaxed mb-6 text-left">
+        ド田舎在住、40歳手前。
+        <br />
+        普段はアナログで体育会系な仕事をしています。
+        <br />
+        <br />
+        エンジニア転職は叶いませんでしたが、AI（Gemini/ChatGPT）という最強の相棒と共に、自分だけのWebサービスを作ることに挑戦中。
+      </p>
+
+      {/* SNSリンクなど（必要なら） */}
+      <div className="flex gap-4 w-full">
+        <Link
+          href="/about"
+          className="flex-1 bg-gray-800 text-white text-sm py-2 rounded-lg hover:bg-gray-700 transition"
+        >
+          詳しいプロフィール
+        </Link>
+      </div>
+    </div>
   );
 }

@@ -23,25 +23,114 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* === Markdown整形用（Tailwind Typography対応） === */
-.prose img {
-  display: block;
-  margin: 1.5rem auto;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
+@layer components {
+  /* * Tailwind Typographyプラグインの基本スタイルが読み込まれていない可能性があるため、
+     * 必要な基本スタイルをここで手動で復活させます。
+     * このCSSによって、h2, ul, olにブラウザデフォルトのスタイルが上書きされます。
+     */
 
-.prose pre {
-  background: #111827;
-  color: #f3f4f6;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  overflow-x: auto;
-}
+  /* 見出しのサイズとスタイルを復活 */
+  .prose h1 {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: 800;
+  }
 
-.prose code {
-  background: #f9fafb;
-  color: #db2777;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
+  /* h1: 3xl */
+  .prose h2 {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: 800;
+  }
+
+  /* h2: 2xl */
+  .prose h3 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: 700;
+  }
+
+  /* h3: xl */
+
+  /* 箇条書きの点とインデントを復活 */
+  .prose ul,
+  .prose ol {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+  }
+
+  .prose ul {
+    list-style-type: disc;
+    /* 黒い点 */
+  }
+
+  .prose ol {
+    list-style-type: decimal;
+    /* 数字 */
+  }
+
+  /* * ✅ 追加：段落内の単一改行を反映させる */
+  .prose p {
+    white-space: pre-wrap;
+    margin-top: 1em;
+    /* 段落の上余白 */
+    margin-bottom: 1em;
+    /* 段落の下余白 */
+  }
+
+  /* リンクの色を強調 */
+  .prose a {
+    color: var(--color-indigo-600, #4f46e5);
+    /* Tailwindのindigo-600 */
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  .prose a:hover {
+    color: var(--color-indigo-800, #3730a3);
+  }
+
+  /* 引用ブロックのスタイル */
+  .prose blockquote {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    padding-left: 1em;
+    border-left: 4px solid #e5e7eb;
+    /* Gray-200 */
+    color: #6b7280;
+    /* Gray-500 */
+    font-style: italic;
+  }
+
+  /* 既存のカスタムスタイルもプロスレイヤーに移動 */
+  .prose img {
+    display: block;
+    margin: 1.5rem auto;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .prose pre {
+    background: #111827;
+    color: #f3f4f6;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    overflow-x: auto;
+  }
+
+  .prose code {
+    background: #f9fafb;
+    color: #db2777;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
+  }
+
+  /* prose-lg などの文字サイズ調整は、HTML側のクラス定義に任せます */
 }

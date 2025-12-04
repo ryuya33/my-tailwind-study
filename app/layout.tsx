@@ -13,22 +13,24 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  // サイトのベースURLを設定（VercelのURLなどが決まったら書き換えてください）
+  metadataBase: new URL("https://syamoji.works"), // ← 仮でも良いのでURL形式にしておくとエラーが消えます
   title: {
-    default: "Okumo 百貨おくも",
-    template: "%s | Okumo 百貨おくも",
+    default: "Syamoji.works | 現場職パパのAI×Web開発記録",
+    template: "%s | Syamoji.works",
   },
-  description: "Next.js + Tailwind CSSで作る個人開発ブログ。",
+  description: "地方在住の現場職パパが、AIと共に学ぶモダンWeb開発の記録ブログ。",
+
   openGraph: {
-    title: "Okumo 百貨おくも",
-    description: "Next.js + Tailwind CSSで作る個人開発ブログ。",
-    url: "https://your-domain.com", // ← あなたのURL
-    siteName: "Okumo 百貨おくも",
+    title: "Syamoji.works",
+    description: "地方在住の現場職パパが、AIと共に学ぶモダンWeb開発の記録ブログ。",
+    siteName: "Syamoji.works",
     images: [
       {
-        url: "https://your-domain.com/ogp-default.png", // デフォルトOGP画像
+        url: "/ogp-default.png", // publicフォルダの画像
         width: 1200,
         height: 630,
-        alt: "Okumo 百貨おくも",
+        alt: "Syamoji.works",
       },
     ],
     locale: "ja_JP",
@@ -36,8 +38,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    creator: "@your_twitter_id", // 任意
-    images: ["https://your-domain.com/ogp-default.png"],
+    images: ["/ogp-default.png"],
   },
 };
 
@@ -48,8 +49,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      {/* デザイン統一の要：背景色(bg-gray-50)と文字色(text-gray-800)をここで強制適用 */}
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased font-sans bg-gray-50 text-gray-800`}
       >
         {children}
       </body>

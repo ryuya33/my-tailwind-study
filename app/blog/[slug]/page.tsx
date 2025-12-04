@@ -2,6 +2,8 @@
 import Header from "../../../components/Header";
 import Footer from "../../../components/Footer";
 import Link from "next/link";
+// Imageコンポーネントを使うためにインポートを追加
+import Image from "next/image";
 import { getPostBySlug, getAllPosts } from "../../../lib/microcms";
 
 export const revalidate = 60;
@@ -10,22 +12,25 @@ type Params = {
   params: Promise<{ slug: string }>;
 };
 
+// 画像がない時のデフォルト画像（publicフォルダに配置済みのもの）
+const DEFAULT_IMAGE_URL = "/syamoji.png";
+
 export async function generateMetadata({ params }: Params) {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   const siteUrl = "http://localhost:3000"; // 本番公開時に変更
 
   return {
-    title: `${post.title} | Okumo 百貨おくも`,
+    title: `${post.title} | Syamoji.works`,
     description: post.description,
     openGraph: {
       title: post.title,
       description: post.description,
       url: `${siteUrl}/blog/${post.slug}`,
-      siteName: "Okumo 百貨おくも",
+      siteName: "Syamoji.works",
       locale: "ja_JP",
       type: "article",
-      images: post.eyecatch ? [post.eyecatch.url] : [], // アイキャッチがあればOGPに設定
+      images: post.eyecatch ? [post.eyecatch.url] : ["/ogp-default.png"],
     },
   };
 }
@@ -42,45 +47,55 @@ export default async function BlogPostPage({ params }: Params) {
   const post = await getPostBySlug(slug);
 
   return (
-    <>
+    // 親要素に font-sans を指定してフォントを統一
+    <div className="flex flex-col min-h-screen pt-16 font-sans">
       <Header />
-      <main className="min-h-screen bg-gray-50 flex flex-col items-center p-8">
-        <article className="prose prose-lg max-w-3xl bg-white p-8 rounded-2xl shadow text-gray-800">
-          {/* アイキャッチ画像があれば表示 */}
-          {post.eyecatch && (
-            <img
-              src={post.eyecatch.url}
-              alt={post.title}
-              className="w-full h-auto rounded-lg mb-6 object-cover"
-              style={{ maxHeight: "400px" }}
-            />
-          )}
 
-          <h1 className="text-3xl font-bold text-gray-900 border-b pb-2 mb-6 text-center">
+      <main className="grow max-w-4xl mx-auto w-full px-6 py-12">
+        <article className="bg-white p-10 rounded-2xl shadow-sm border border-gray-100">
+
+          {/* アイキャッチ画像があれば表示 */}
+          <div className="aspect-video relative bg-gray-100 mb-8 rounded-xl overflow-hidden">
+             <Image
+               src={post.eyecatch?.url || DEFAULT_IMAGE_URL}
+               alt={post.title}
+               fill
+               className="object-cover"
+             />
+          </div>
+
+          <h1 className="text-3xl font-bold text-gray-900 mb-6 pb-4 border-b border-gray-100 text-center">
             {post.title}
           </h1>
 
-          {/* カテゴリがあれば表示 */}
-          {post.category && (
-            <span className="bg-indigo-100 text-indigo-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded mb-4 inline-block">
-              {post.category.name}
-            </span>
-          )}
+          <div className="flex items-center justify-center gap-4 mb-10 text-sm text-gray-500">
+            <time>{new Date(post.publishedAt).toLocaleDateString("ja-JP")}</time>
+            {/* カテゴリがあれば表示 */}
+            {post.category && (
+              <span className="bg-indigo-50 text-indigo-600 px-3 py-1 rounded-full font-bold text-xs">
+                {post.category.name}
+              </span>
+            )}
+          </div>
 
+          {/* ✅ ここを修正！ classNameに "prose" などを追加しました */}
           <div
-            className="prose-img:mx-auto prose-pre:bg-gray-100 prose-pre:p-4 prose-pre:rounded-lg"
+            className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-indigo-600 prose-img:mx-auto prose-pre:bg-gray-100 prose-pre:p-4 prose-pre:rounded-lg"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
+
         </article>
 
-        <Link
-          href="/blog"
-          className="text-indigo-600 underline mt-8 inline-block hover:text-indigo-800"
-        >
-          ← ブログ一覧へ戻る
-        </Link>
+        <div className="mt-12 text-center">
+          <Link
+            href="/blog"
+            className="text-indigo-600 underline hover:text-indigo-800 font-medium"
+          >
+            ← ブログ一覧へ戻る
+          </Link>
+        </div>
       </main>
       <Footer />
-    </>
+    </div>
   );
 }

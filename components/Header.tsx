@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Header() {
   return (
     // スクロールしても上部に固定 + すりガラス効果 (backdrop-blur)
-    <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <header className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 font-sans">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* ロゴ部分 */}
@@ -14,7 +14,7 @@ export default function Header() {
             S
           </span>
           {/* サイトタイトル */}
-          <span className="text-xl font-bold text-gray-800 tracking-tight font-sans">
+          <span className="text-xl font-bold text-gray-800 tracking-tight">
             Syamoji<span className="text-indigo-600">.works</span>
           </span>
         </Link>

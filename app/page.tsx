@@ -5,21 +5,20 @@ import Footer from "../components/Footer";
 import ProfileCard from "../components/ProfileCard";
 import { getAllPosts } from "../lib/microcms";
 
-// revalidate設定（60秒ごとに更新チェック）
 export const revalidate = 60;
 
-// 画像がない時は、publicフォルダにあるこの画像を表示します
+// 画像がない時のデフォルト画像（拡張子に注意！ png か jpg か確認してください）
 const DEFAULT_IMAGE_URL = "/syamoji.png";
 
 export default async function Home() {
-  // microCMSから記事データを取得
   const posts = await getAllPosts();
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 text-gray-800 font-sans pt-16">
+    // pt-16 でヘッダー分の余白を確保
+    <div className="flex flex-col min-h-screen font-sans pt-16">
       <Header />
 
-      {/* 🔹 ヒーローセクション（サイトの顔） */}
+      {/* 🔹 ヒーローセクション */}
       <section className="bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-6 py-16 md:py-24 text-center">
           <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
@@ -38,14 +37,13 @@ export default async function Home() {
       <main className="max-w-6xl mx-auto px-6 py-12 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-          {/* 左側：記事一覧エリア (2カラム分) */}
+          {/* 左側：記事一覧エリア */}
           <div className="lg:col-span-2">
             <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
               <span className="w-1 h-6 bg-indigo-600 rounded-full"></span>
               新着記事
             </h2>
 
-            {/* 記事グリッド */}
             <div className="grid md:grid-cols-2 gap-6">
               {posts.map((post) => (
                 <Link
@@ -53,8 +51,6 @@ export default async function Home() {
                   href={`/blog/${post.slug}`}
                   className="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition duration-300 flex flex-col h-full"
                 >
-                  {/* サムネイル画像（あれば表示、なければグレー） */}
-                  {/* eyecatchがあればそのURL、なければDEFAULT_IMAGE_URLを使う */}
                   <div className="aspect-video relative bg-gray-100">
                     <Image
                       src={post.eyecatch?.url || DEFAULT_IMAGE_URL}
@@ -64,9 +60,8 @@ export default async function Home() {
                     />
                   </div>
 
-                  {/* 記事テキスト情報 */}
+                  {/* flex-1 を使い、高さを揃える */}
                   <div className="p-5 flex-1 flex flex-col">
-                    {/* カテゴリ (あれば) */}
                     {post.category && (
                       <span className="text-xs font-bold text-indigo-600 mb-2 block">
                         {post.category.name}
@@ -77,7 +72,6 @@ export default async function Home() {
                       {post.title}
                     </h3>
 
-                    {/* 日付 */}
                     <time className="text-xs text-gray-400 mt-auto">
                       {new Date(post.publishedAt).toLocaleDateString("ja-JP")}
                     </time>
@@ -86,7 +80,6 @@ export default async function Home() {
               ))}
             </div>
 
-            {/* 記事がない場合の表示 */}
             {posts.length === 0 && (
               <p className="text-gray-500 text-center py-10">記事はまだありません。</p>
             )}
@@ -98,12 +91,10 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* 右側：サイドバーエリア (1カラム分) */}
+          {/* 右側：サイドバー */}
           <aside className="lg:col-span-1 space-y-8">
-            {/* プロフィールカード */}
             <ProfileCard />
 
-            {/* ここに将来的に「人気記事」や「カテゴリー一覧」を追加できます */}
             <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                <h3 className="font-bold text-gray-800 mb-4">開発環境</h3>
                <div className="flex flex-wrap gap-2">

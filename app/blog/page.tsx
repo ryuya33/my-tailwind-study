@@ -4,6 +4,9 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { getAllPosts } from "../../lib/microcms";
 
+// 60秒ごとに新しい記事がないかチェックする設定
+export const revalidate = 60;
+
 const DEFAULT_IMAGE_URL = "/syamoji.png";
 
 export default async function BlogPage() {
